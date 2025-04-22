@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  db:
+    image: mariadb:10.9
+    environment:
+      MYSQL_ROOT_PASSWORD: nordeidevågen
+      MYSQL_DATABASE: forening
+      MYSQL_USER: forening
+      MYSQL_PASSWORD: nordeidevågen
+    volumes:
+      - db_data:/var/lib/mysql
+
+  noco:
+    image: nocodb/nocodb:latest
+    ports:
+      - "8080:8080"
+    environment:
+      NC_DB: mysql
+      NC_DB_DATABASE: nordeidevågen
+      NC_DB_USER: forening
+      NC_DB_PASSWORD: nordeidevågen
+      NC_DB_HOST: db
+    volumes:
+      - noco_data:/usr/app/data
+
+  app:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - noco
+
+  invoicer:
+    build: ./invoicer
+    restart: "no"
+    depends_on:
+      - noco
+
+volumes:
+  db_data:
+  noco_data:
