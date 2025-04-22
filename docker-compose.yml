@@ -13,19 +13,29 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   noco:
     image: nocodb/nocodb:latest
     ports:
       - "8080:8080"
     environment:
-      # Enkel URL i stedet for NC_DB_*-feltene
       NC_DB_URL: mysql://${MYSQL_USER:-forening}:${MYSQL_PASSWORD:-nordeidevågen}@db:3306/${MYSQL_DATABASE:-forening}
+      NC_CORS_ENABLED: "true"
     depends_on:
       db:
         condition: service_healthy
     volumes:
       - noco_data:/usr/app/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   app:
     build: ./frontend
@@ -33,12 +43,22 @@ services:
       - "80:80"
     depends_on:
       - noco
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   invoicer:
     build: ./invoicer
     restart: "no"
     depends_on:
       - noco
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   db_data:

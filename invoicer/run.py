@@ -3,9 +3,12 @@ import requests
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
+import logging
 
 API_BASE = os.getenv("API_BASE", "http://noco:8080/api/v1/db/data/v1/breforening")
 HEADERS = {"xc-auth": os.getenv("API_KEY", "default_api_key")}
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 def fetch_members():
     r = requests.get(f"{API_BASE}/members", headers=HEADERS,
@@ -25,13 +28,17 @@ def generate_invoice(member):
     return pdf_path
 
 def main():
+    logging.info("Fetching members with pending invoices...")
     df = fetch_members()
     for _, m in df.iterrows():
+        logging.info(f"Generating invoice for member ID: {m.id}")
         generate_invoice(m)
-        # Update invoice_status via PATCH
+        logging.info(f"Updating invoice status for member ID: {m.id}")
         requests.patch(f"{API_BASE}/members/{m.id}",
                        json={"invoice_status": "generert"},
                        headers=HEADERS)
+    logging.info("All invoices processed successfully.")
 
 if __name__ == "__main__":
+    logging.info("Invoicer service started.")
     main()

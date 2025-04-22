@@ -39,3 +39,11 @@ jobs:
           git pull origin main
           docker compose pull
           docker compose up -d
+
+    - name: Notify deployment status
+      if: always()
+      run: |
+        if [ "${{ job.status }}" == "success" ]; then
+          echo "Deployment succeeded!" | mail -s "Deployment Status" ${{ secrets.NOTIFY_EMAIL }}
+        else
+          echo "Deployment failed!" | mail -s "Deployment Status" ${{ secrets.NOTIFY_EMAIL }}

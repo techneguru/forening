@@ -2,24 +2,36 @@
 <html lang="no">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Båtforening</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header class="hero">
-    <h1>Velkommen til Båtforeningen</h1>
-    <button onclick="location.href='/portal'">Logg inn</button>
+    <div class="hero-content">
+      <h1>Velkommen til Båtforeningen</h1>
+      <p>Opplev fellesskapet og gleden ved båtlivet.</p>
+      <button onclick="location.href='/portal'">Logg inn</button>
+    </div>
   </header>
 
-  <section id="news">
-    <h2>Siste Nytt</h2>
-    <div id="news-list"></div>
-  </section>
+  <main>
+    <section id="news" class="section">
+      <h2>Siste Nytt</h2>
+      <div id="news-list" class="news-list">
+        <p>Loading news...</p>
+      </div>
+    </section>
 
-  <section id="info">
-    <h2>Om Foreningen</h2>
-    <p>Her står generell informasjon…</p>
-  </section>
+    <section id="info" class="section">
+      <h2>Om Foreningen</h2>
+      <p>Vi er en båtforening dedikert til å støtte våre medlemmer med fasiliteter, arrangementer og fellesskap. Bli med oss for å oppleve det beste av båtlivet.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2023 Båtforeningen. Alle rettigheter reservert.</p>
+  </footer>
 
   <script src="js/app.js"></script>
 </body>
