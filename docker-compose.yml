@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   db:
     image: mariadb:10.9
@@ -20,11 +19,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      NC_DB: mysql
-      NC_DB_DATABASE: ${MYSQL_DATABASE:-forening}
-      NC_DB_USER: ${MYSQL_USER:-forening}
-      NC_DB_PASSWORD: ${MYSQL_PASSWORD:-nordeidevågen}
-      NC_DB_HOST: db
+      # Enkel URL i stedet for NC_DB_*-feltene
+      NC_DB_URL: mysql://${MYSQL_USER:-forening}:${MYSQL_PASSWORD:-nordeidevågen}@db:3306/${MYSQL_DATABASE:-forening}
     depends_on:
       db:
         condition: service_healthy
