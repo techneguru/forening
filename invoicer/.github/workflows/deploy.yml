@@ -1,0 +1,41 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build invoicer image
+      run: docker build -t ${{ secrets.DOCKERHUB_USER }}/invoicer:latest invoicer
+
+    - name: Build frontend image
+      run: docker build -t ${{ secrets.DOCKERHUB_USER }}/frontend:latest frontend
+
+    - name: Login to Dockerhub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Push images
+      run: |
+        docker push ${{ secrets.DOCKERHUB_USER }}/invoicer:latest
+        docker push ${{ secrets.DOCKERHUB_USER }}/frontend:latest
+
+    - name: Deploy to VM
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          cd /opt/forening
+          git pull origin main
+          docker compose pull
+          docker compose up -d
