@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# WeasyPrint output
+generated/
+
+# Docker
+**/db_data/
+**/noco_data/
+
+# Node / frontend artifacts
+node_modules/
+dist/
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
