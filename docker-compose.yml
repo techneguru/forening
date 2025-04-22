@@ -3,12 +3,17 @@ services:
   db:
     image: mariadb:10.9
     environment:
-      MYSQL_ROOT_PASSWORD: nordeidevågen
-      MYSQL_DATABASE: forening
-      MYSQL_USER: forening
-      MYSQL_PASSWORD: nordeidevågen
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-nordeidevågen}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-forening}
+      MYSQL_USER: ${MYSQL_USER:-forening}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-nordeidevågen}
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   noco:
     image: nocodb/nocodb:latest
@@ -16,10 +21,13 @@ services:
       - "8080:8080"
     environment:
       NC_DB: mysql
-      NC_DB_DATABASE: nordeidevågen
-      NC_DB_USER: forening
-      NC_DB_PASSWORD: nordeidevågen
+      NC_DB_DATABASE: ${MYSQL_DATABASE:-forening}
+      NC_DB_USER: ${MYSQL_USER:-forening}
+      NC_DB_PASSWORD: ${MYSQL_PASSWORD:-nordeidevågen}
       NC_DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
     volumes:
       - noco_data:/usr/app/data
 
