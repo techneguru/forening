@@ -1,13 +1,9 @@
 // frontend/js/app.js
-const API     = 'http://192.168.1.20:8080/api/v1/db/data/v1/breforening/news';
-const API_KEY = 'default_api_key';
-
+const API = '/api/news'; // Proxy endpoint
 const list = document.getElementById('news-list');
 list.innerHTML = '<p>Loading news...</p>';
 
-fetch(API, {
-  headers: { 'xc-auth': API_KEY }
-})
+fetch(API)
   .then(r => {
     if (!r.ok) {
       throw new Error(`HTTP error! status: ${r.status}`);

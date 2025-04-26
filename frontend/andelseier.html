@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andelseier Område</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Andelseier Område</h1>
+      <p>Velkommen til ditt område for dokumenter, medlemsliste og utgiftsrapportering.</p>
+      <button class="primary" onclick="location.href='http://localhost:8080'">Gå til NocoDB</button>
+    </div>
+  </header>
+
+  <nav class="sticky-nav" aria-label="Hovednavigasjon">
+    <ul>
+      <li><a href="#documents">Dokumentarkiv</a></li>
+      <li><a href="#members">Medlemsliste</a></li>
+      <li><a href="#expenses">Rapporter Utgifter</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="documents" class="section">
+      <h2>Dokumentarkiv (Siste 5 år)</h2>
+      <p>Her finner du alle relevante dokumenter fra de siste fem årene.</p>
+      <iframe src="http://localhost:8080/dashboard?view=documents" class="responsive-iframe"></iframe>
+    </section>
+
+    <section id="members" class="section">
+      <h2>Medlemsliste</h2>
+      <p>Se oversikt over medlemmer, båttyper og utestående betalinger.</p>
+      <iframe src="http://localhost:8080/dashboard?view=members" class="responsive-iframe"></iframe>
+    </section>
+
+    <section id="expenses" class="section">
+      <h2>Rapporter Utgifter</h2>
+      <p>Send inn utlegg og last opp kvitteringer her.</p>
+      <iframe src="http://localhost:8080/dashboard?view=expenses" class="responsive-iframe"></iframe>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2023 Båtforeningen. Alle rettigheter reservert.</p>
+  </footer>
+
+  <script src="js/andelseier.js"></script>
+</body>
+</html>

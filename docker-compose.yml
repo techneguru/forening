@@ -2,10 +2,10 @@ services:
   db:
     image: mariadb:10.9
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-nordeidevågen}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-forening}
-      MYSQL_USER: ${MYSQL_USER:-forening}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-nordeidevågen}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -24,18 +24,19 @@ services:
     ports:
       - "8080:8080"
     environment:
-      NC_DB_URL: mysql://${MYSQL_USER:-forening}:${MYSQL_PASSWORD:-nordeidevågen}@db:3306/${MYSQL_DATABASE:-forening}
+      NC_DB_URL: mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE}
+      NC_AUTH_JWT_SECRET: "your_secret_key"
       NC_CORS_ENABLED: "true"
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     volumes:
       - noco_data:/usr/app/data
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
 
   app:
     build: ./frontend
@@ -43,6 +44,11 @@ services:
       - "80:80"
     depends_on:
       - noco
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     logging:
       driver: "json-file"
       options:
