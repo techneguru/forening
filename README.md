@@ -1,78 +1,125 @@
-# Båtforening Project
+# Nordeidevågen Båtforening – Enkel hjemmeside + en database på baksiden
 
-## Overview
-This project manages a boat association's operations, including:
-- A public-facing website.
-- A members' area for accessing documents, member lists, and submitting expenses.
-- Automated invoicing using Python.
+## Oversikt
+Prosjektet setter opp:
+- En offentlig nettside
+- Medlemsområde for dokumenter, medlemslister og utlegg
+- Automatisk fakturering (Python)
+- Alt kjører i Docker-containere for enkel drift
 
-## Prerequisites
-- Ubuntu 20.04 or later.
-- Docker and Docker Compose installed.
-- Python 3.11 (for backend proxy development, if needed).
+---
 
-## Setup Instructions
+## Forutsetninger
+- Ubuntu 20.04 eller nyere
+- Docker og Docker Compose installert
+- (Valgfritt) Python 3.11 hvis du vil kjøre backend-script lokalt
 
+---
+
+## Oppsett – steg for steg
+
+### 1. Oppdater og installer nødvendige pakker
+```bash
 sudo apt update
 sudo apt install -y docker.io docker-compose python3-pip
+```
 
-### 1. Clone the Repository
+### 2. Klon prosjektet
 ```bash
 git clone https://github.com/techneguru/forening.git
-cd techneguru/forening
+cd forening
+```
 
-2. Configure Environment Variables
-Create a .env file in the root directory:
+### 3. Sett opp miljøvariabler
+Kopier eksempel-filen og rediger med dine egne passord:
+```bash
 cp .env.example .env
-nano .env  # Update credentials as needed
+nano .env
+```
+**NB:** Bruk sterke passord for `MYSQL_ROOT_PASSWORD` og `NC_AUTH_JWT_SECRET` i produksjon.
 
-3. Install Docker and Docker Compose
-Install Docker:
-sudo apt install -y docker-compose
+---
+
+### 4. Bygg og start alle tjenester
+```bash
 docker-compose up --build -d
+```
 
-4. Build and Run the Project
-Run the following command to start all services:
-docker-compose up --build -d
+---
 
-5. Access the Application
-Public Website: http://<your-server-ip>
-Members' Area: http://<your-server-ip>/andelseier
-NocoDB Admin: http://<your-server-ip>:8080
+### 5. Tilgang til tjenestene
+- **Offentlig nettside:** http://<din-server-ip>
+- **Medlemsområde:** http://<din-server-ip>/andelseier.html
+- **NocoDB admin:** http://<din-server-ip>:8080
 
-6. Stopping the Services
-To stop all services, run:
+---
 
+### 6. Stopp alle tjenester
+```bash
 docker-compose down
+```
 
-### 7. Install Python Dependencies (Optional)
-If you need to run the backend proxy locally, install the required Python packages:
+---
+
+### 7. (Valgfritt) Kjør backend-script lokalt
+Hvis du ønsker å kjøre backend-script (f.eks. proxy eller fakturering) utenfor Docker:
 ```bash
-pip install -r [requirements.txt](http://_vscodecontentref_/20)
-
-Notes
-Ensure the .env file is not exposed publicly.
-Use a strong MYSQL_ROOT_PASSWORD and NC_AUTH_JWT_SECRET for production.
-Regularly back up the db_data and noco_data volumes.
-
-Troubleshooting
-Check logs for errors
-docker-compose logs
-
-Ensure all services are healthy:
-docker ps
-
-### 8. Configure NocoDB Authentication
-1. Access the NocoDB admin interface: `http://<your-server-ip>:8080`.
-2. Log in with the default admin account or create a new admin user.
-3. Create roles (e.g., "Admin", "Member") and assign permissions for tables and views.
-4. Add user accounts for members and assign them the "Member" role.
-
-### 9. Backup and Restore
-#### Backup
-To back up the database, run:
+cd backend
+pip install -r requirements.txt
+python proxy.py
+```
+eller for fakturering:
 ```bash
-docker exec -t <db_container_name> mysqldump -u<MYSQL_USER> -p<MYSQL_PASSWORD> <MYSQL_DATABASE> > backup.sql
+cd invoicer
+pip install -r requirements.txt
+python run.py
+```
 
-RESTORE BACKUP
-docker exec -i <db_container_name> mysql -u<MYSQL_USER> -p<MYSQL_PASSWORD> <MYSQL_DATABASE> < backup.sql
+---
+
+### 8. Konfigurer NocoDB og brukertilgang
+1. Gå til NocoDB admin: http://<din-server-ip>:8080
+2. Logg inn som admin eller opprett ny admin-bruker.
+3. Opprett roller (f.eks. "Admin", "Medlem") og sett riktige rettigheter på tabeller og visninger.
+4. Legg til brukere og tildel roller.
+
+---
+
+### 9. Backup og gjenoppretting av database
+
+**Backup:**
+```bash
+docker exec -t <db_container_navn> mysqldump -u<MYSQL_USER> -p<MYSQL_PASSWORD> <MYSQL_DATABASE> > backup.sql
+```
+
+**Gjenopprett:**
+```bash
+docker exec -i <db_container_navn> mysql -u<MYSQL_USER> -p<MYSQL_PASSWORD> <MYSQL_DATABASE> < backup.sql
+```
+
+---
+
+## Notater og tips
+
+- `.env`-filen skal aldri deles offentlig.
+- Husk å ta jevnlig backup av `db_data` og `noco_data` volumene.
+- For å sjekke status og logger:
+  ```bash
+  docker-compose logs
+  docker ps
+  ```
+- For å oppdatere til nyeste versjon:
+  ```bash
+  git pull
+  docker-compose up --build -d
+  ```
+
+---
+
+## Feilsøking
+
+- **Tjeneste starter ikke:** Sjekk logger med `docker-compose logs <tjenestenavn>`
+- **Endringer vises ikke:** Prøv å bygge på nytt med `docker-compose up --build -d`
+- **NocoDB-tilgang:** Sjekk at port 8080 er åpen i brannmuren
+
+---

@@ -66,6 +66,15 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  proxy:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    depends_on:
+      - noco
+
 volumes:
   db_data:
   noco_data:

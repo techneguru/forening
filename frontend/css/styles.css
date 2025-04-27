@@ -8,10 +8,12 @@ body {
 }
 
 .hero {
-  background: #007BFF;
+  background: linear-gradient(135deg, #007BFF 60%, #0056b3 100%);
   color: white;
   text-align: center;
   padding: 4rem 2rem;
+  position: relative;
+  /* Optional: background-image: url('../images/your-background.jpg'); background-size: cover; background-position: center; */
 }
 
 .hero-content {
@@ -84,8 +86,8 @@ body {
 }
 
 .footer {
-  background: #333;
-  color: white;
+  background: #222;
+  color: #fff;
   text-align: center;
   padding: 1rem 0;
   margin-top: 2rem;
