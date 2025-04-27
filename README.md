@@ -85,6 +85,44 @@ python run.py
 
 ---
 
+## Slik setter du opp NocoDB
+
+1. **Logg inn som admin**
+   - Åpne `http://<din-server-ip>:8080` i nettleseren og logg inn med admin-bruker.
+
+2. **Koble til databasen**
+   - Velg "Add Database" og koble til MariaDB (bruk info fra `.env`).
+
+3. **Opprett nødvendige tabeller**
+   - Opprett tabeller for `news`, `documents`, `members` og `expenses` med relevante kolonner (se eksempel under).
+
+   **Eksempel på kolonner:**
+   - `news`: id, title, content, date
+   - `documents`: id, title, file_url, date
+   - `members`: id, name, boat_type, boat_length, outstanding_payments
+   - `expenses`: id, member_name, description, amount, receipt_url, date
+
+4. **Lag views og skjema**
+   - Lag egne "Views" for dokumentarkiv (filtrer på siste 5 år), medlemsliste og utlegg (aktiver "Form View" for innsending).
+
+5. **Sett opp roller og tilgang**
+   - Gå til "Settings" → "Users & Roles".
+   - Opprett roller som "Admin" og "Medlem".
+   - Sett rettigheter slik at medlemmer kun kan se og sende inn det de skal.
+
+6. **Legg til brukere**
+   - Legg til brukere og tildel riktig rolle.
+
+7. **Test fra nettsiden**
+   - Sjekk at iframe-lenker i `andelseier.html` viser riktig view/skjema.
+   - Sjekk at `/api/news` henter fra riktig tabell.
+
+---
+
+**Nå er NocoDB satt opp og klar til bruk med nettsiden og medlemsområdet!**
+
+---
+
 ### 9. Backup og gjenoppretting av database
 
 **Backup:**

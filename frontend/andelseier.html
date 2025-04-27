@@ -9,38 +9,44 @@
 <body>
   <header class="hero">
     <div class="hero-content">
-      <!-- Optional: Add a background image or logo here -->
       <h1>Område for andelseiere</h1>
-      <p>Her finner dere informasjon som er intern for foreningen, som medlemslister, møtereferat, og økonomi.</p>
-      <button class="primary" onclick="location.href='http://localhost:8080'">Gå til NocoDB</button>
+      <p>Her finner du informasjon om medlemskap, båtplasser og økonomi i foreningen.</p>
+      <button class="primary" onclick="location.href='http://localhost:8080'">Gå til NocoDB Admin</button>
     </div>
   </header>
 
   <nav class="sticky-nav" aria-label="Hovednavigasjon">
     <ul>
-      <li><a href="#documents">Dokumentarkiv</a></li>
-      <li><a href="#members">Medlemsliste</a></li>
+      <li><a href="#shareholders">Andelseiere</a></li>
+      <li><a href="#dock_spots">Kaiplasser</a></li>
+      <li><a href="#storage_spots">Opplagsplasser</a></li>
       <li><a href="#expenses">Rapporter Utgifter</a></li>
     </ul>
   </nav>
 
   <main>
-    <section id="documents" class="section">
-      <h2>Dokumentarkiv (Siste 5 år)</h2>
-      <p>Her finner du alle relevante dokumenter fra de siste fem årene.</p>
-      <iframe src="http://localhost:8080/dashboard?view=documents" class="responsive-iframe"></iframe>
+    <section id="shareholders" class="section">
+      <h2>Andelseiere</h2>
+      <p>Liste over alle som er andelseiere i båtforeningen.</p>
+      <iframe src="http://localhost:8080/dashboard?view=Shareholders" class="responsive-iframe"></iframe>
     </section>
 
-    <section id="members" class="section">
-      <h2>Medlemsliste</h2>
-      <p>Se oversikt over medlemmer, båttyper og utestående betalinger.</p>
-      <iframe src="http://localhost:8080/dashboard?view=members" class="responsive-iframe"></iframe>
+    <section id="dock_spots" class="section">
+      <h2>Kaiplasseringer</h2>
+      <p>Se hvem som har kaiplass i båthavnen.</p>
+      <iframe src="http://localhost:8080/dashboard?view=DockSpots" class="responsive-iframe"></iframe>
+    </section>
+
+    <section id="storage_spots" class="section">
+      <h2>Opplagsplasser (Vinteropplag)</h2>
+      <p>Oversikt over medlemmer som har opplagsplass eller står på venteliste.</p>
+      <iframe src="http://localhost:8080/dashboard?view=StorageSpots" class="responsive-iframe"></iframe>
     </section>
 
     <section id="expenses" class="section">
       <h2>Rapporter Utgifter</h2>
       <p>Send inn utlegg og last opp kvitteringer her.</p>
-      <iframe src="http://localhost:8080/dashboard?view=expenses" class="responsive-iframe"></iframe>
+      <iframe src="http://localhost:8080/dashboard?view=ExpensesForm" class="responsive-iframe"></iframe>
     </section>
   </main>
 
